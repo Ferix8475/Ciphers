@@ -15,7 +15,7 @@ class Caesar:
         self.encryption_table = str.maketrans(alphabet, shifted_alphabet)
         self.decryption_table = str.maketrans(shifted_alphabet, alphabet)
 
-    def changeKey(self, newShift: int ):
+    def changeKey(self, newShift: int) -> None:
 
         if not isinstance(newShift, int):
             raise InputError("The Key/Shift must be an integer. Proper Usage: obj.changeKey(int newShift)")
@@ -46,5 +46,5 @@ class Caesar:
         return ciphertext.translate(self.decryption_table)
     
     @staticmethod
-    def generate_key(self) -> int:
+    def generate_key() -> int:
         return secrets.randbelow(26)
