@@ -12,8 +12,8 @@ class Caesar:
         shift = shift % 26
         alphabet = string.ascii_uppercase
         shifted_alphabet = alphabet[shift:] + alphabet[:shift]
-        self.encryption_table = str.maketrans(alphabet, shifted_alphabet)
-        self.decryption_table = str.maketrans(shifted_alphabet, alphabet)
+        self.__decryption_key = str.maketrans(alphabet, shifted_alphabet)
+        self.__decryption_key = str.maketrans(shifted_alphabet, alphabet)
 
     def changeKey(self, newShift: int) -> None:
 
@@ -23,15 +23,15 @@ class Caesar:
         newShift = newShift % 26
         alphabet = string.ascii_uppercase
         shifted_alphabet = alphabet[newShift:] + alphabet[:newShift]
-        self.encryption_table = str.maketrans(alphabet, shifted_alphabet)
-        self.decryption_table = str.maketrans(shifted_alphabet, alphabet)
+        self.__decryption_key = str.maketrans(alphabet, shifted_alphabet)
+        self.__decryption_key = str.maketrans(shifted_alphabet, alphabet)
 
     def encrypt(self, plaintext: str) -> str:
 
         if not isinstance(plaintext, str):
             raise InputError("Plaintext must be a string. Proper Usage: obj.encrypt(string plaintext)")
 
-        return standard_encode(plaintext).translate(self.encryption_table)
+        return standard_encode(plaintext).translate(self.__decryption_key)
 
     def decrypt(self, ciphertext: str) -> str:
 
@@ -43,7 +43,7 @@ class Caesar:
                 raise InputError("Ciphertext must strictly contain upper case letters. Proper Usage: obj.decrypt(string ciphertext)")
 
 
-        return ciphertext.translate(self.decryption_table)
+        return ciphertext.translate(self.__decryption_key)
     
     @staticmethod
     def generate_key() -> int:

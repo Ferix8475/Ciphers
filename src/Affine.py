@@ -23,8 +23,8 @@ class Affine:
         for n in range(26):
             shifted_alphabet += num_to_alpha[(a * n + b) % 26]
 
-        self.encryption_table = str.maketrans(alphabet, shifted_alphabet)
-        self.decryption_table = str.maketrans(shifted_alphabet, alphabet)
+        self.__encryption_key = str.maketrans(alphabet, shifted_alphabet)
+        self.__decryption_key = str.maketrans(shifted_alphabet, alphabet)
 
     def changeKey(self, new_a: int, new_b: int) -> None:
 
@@ -44,15 +44,15 @@ class Affine:
         for n in range(26):
             shifted_alphabet += num_to_alpha[(new_a * n + new_b) % 26]
 
-        self.encryption_table = str.maketrans(alphabet, shifted_alphabet)
-        self.decryption_table = str.maketrans(shifted_alphabet, alphabet)
+        self.__encryption_key = str.maketrans(alphabet, shifted_alphabet)
+        self.__decryption_key = str.maketrans(shifted_alphabet, alphabet)
 
     def encrypt(self, plaintext: str) -> str:
 
         if not isinstance(plaintext, str):
             raise InputError("Plaintext must be a string. Proper Usage: obj.encrypt(string plaintext)")
 
-        return standard_encode(plaintext).translate(self.encryption_table)
+        return standard_encode(plaintext).translate(self.__encryption_key)
 
     def decrypt(self, ciphertext: str) -> str:
 
@@ -63,7 +63,7 @@ class Affine:
             if not char.isupper():
                 raise InputError("Ciphertext must strictly contain upper case letters. Proper Usage: obj.decrypt(string ciphertext)")
 
-        return ciphertext.translate(self.decryption_table)
+        return ciphertext.translate(self.__decryption_key)
     
     @staticmethod
     def generate_key() -> int:
