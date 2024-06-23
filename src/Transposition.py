@@ -20,13 +20,15 @@ class RectangularTransposition:
         sortkey = sorted(key)
         index_map = {char: i for i, char in enumerate(key)}
 
+        print(key)
+
         self.__encryption_key = [index_map[char] for char in sortkey]
 
         self.__decryption_key = [0] * len(self.__encryption_key)
         for index, value in enumerate(self.__encryption_key):
             self.__decryption_key[value] = index
         
-      
+
         
        
     # Key must have only one instance of each of the 26 letters (Uppercase or Lowercase)
@@ -51,6 +53,8 @@ class RectangularTransposition:
         self.__decryption_key = [0] * len(self.__encryption_key)
         for index, value in enumerate(self.__encryption_key):
             self.__decryption_key[value] = index
+
+        
        
 
     # Plaintext must be a string
@@ -95,4 +99,4 @@ class RectangularTransposition:
        return ''.join(secrets.choice(characters) for _ in range(length))
 
         
-    
+x = RectangularTransposition("GGUUAARRDD")

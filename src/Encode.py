@@ -6,9 +6,9 @@ Encoding method for most of the classical cryptosystems, adds padding if require
 """
 def standard_encode(plaintext: str, padBound = 0) ->  str: 
     plaintext = ''.join(char.upper() for char in plaintext if char.isalpha())
-    if not padBound:
+    if not padBound or len(plaintext) % padBound == 0:
         return plaintext
     else: 
-        return plaintext + 'X' * (padBound - (len(plaintext) % padBound))
+        return plaintext + 'Z' * (padBound - (len(plaintext) % padBound))
 
 
