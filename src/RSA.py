@@ -2,7 +2,6 @@ import Encode
 from Errors import InputError
 import secrets
 import math
-import math
 import Primes
 import base64
 
@@ -271,7 +270,7 @@ def encrypt(plaintext: str, key: RSA_key) -> int:
 
     padded_plaintext = Encode.pkcs1_v15_pad(plaintext, key.size)
     n, e = key.public_key()
-    return Primes.bin_exp_mod(padded_plaintext, e, n)
+    return pow(padded_plaintext, e, n)
 
 
 
@@ -290,6 +289,6 @@ def decrypt(ciphertext: int, key: RSA_key) -> str:
     """
 
     n, d = key._private_key()
-    padded_plaintext = Primes.bin_exp_mod(ciphertext, d, n)
+    padded_plaintext = pow(ciphertext, d, n)
     return Encode.pkcs1_v15_decode(padded_plaintext)
     

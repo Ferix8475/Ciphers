@@ -1,10 +1,12 @@
+import math
 import secrets 
-
+from sympy import primefactors
+from Errors import InputError
 
 def bin_exp_mod(a: int, m: int, n: int) -> int:
     """
 
-    Calculates a^m mod n
+    Calculates a^m mod n. However, it is recommended that python built in pow() method be used
 
     @param: a - the base
     @param: m - the exponent
@@ -60,11 +62,11 @@ def miller_rabin_Test(n: int, witness: int, d: int, s: int) -> bool:
 
     """
 
-    if bin_exp_mod(witness, d, n) == 1: # First condition witness^d congruent to 1 mod n
+    if pow(witness, d, n) == 1: # First condition witness^d congruent to 1 mod n
         return True
     power_of_2 = 1
     for _ in range(s): # Check if witness^[(each power of two less than 2^s-1) * d] is congruent to -1 mod n
-        if bin_exp_mod(witness, power_of_2 * d, n) == n-1:
+        if pow(witness, power_of_2 * d, n) == n-1:
             return True
         power_of_2 *= 2
 
@@ -123,3 +125,58 @@ def generate_prime(bits: int, num_witnesses = 12, tries = 10000) -> int:
         if isPrime(num, num_witnesses):
             return num
     
+    raise RuntimeError("Tries exhausted, increase the tries parameter, or modify the other inputs")
+
+
+def is_primitive_root(g: int, p: int) -> bool:
+    """
+    Determines whether g is a primitive root of p
+
+    @param: g - the candidate primitive root
+    @param: p - the prime number
+
+    @return: bool, true if g is a primitive root, false if not
+
+    """
+    if not isPrime(p):
+        raise InputError(str(p)+ " is not a prime number.")
+    
+    if math.gcd(g, p) != 1:
+        return False
+    
+    factors_of_p_minus_1 = primefactors(p - 1)
+    
+    for q in factors_of_p_minus_1:
+        if pow(g, (p - 1) // q, p) == 1:
+            return False
+    
+    return True
+
+
+def find_primitive_root(p):
+    """
+    Finds the smallest primitive root of prime number p
+
+    @param: p - the prime number
+
+    @return: int, the smallest primitive root of prime number p
+
+    """
+    if not isPrime(p):
+        raise InputError(str(p)+ " is not a prime number.")
+    
+    phi_p = p - 1 
+    pf = primefactors(phi_p)
+    
+    for g in range(2, p):
+        is_primitive_root = True
+        for d in pf:
+            if pow(g, phi_p // d, p) == 1:
+                is_primitive_root = False
+                break
+        if is_primitive_root:
+            return g
+    
+    return None
+
+
