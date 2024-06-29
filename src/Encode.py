@@ -23,7 +23,7 @@ def standard_encode(plaintext: str, padBound = 0) ->  str:
 def pkcs1_v15_pad(plaintext: str, key_size: int) -> bytes:
     """
 
-    Padding method for RSA using PKCS #1 v1.5.
+    Padding method for RSA, ElGamal using PKCS #1 v1.5.
 
     @param: plaintext - the plaintext to be encoded, as a string.
     @param: padBound - the size of the key in bits.
@@ -37,7 +37,7 @@ def pkcs1_v15_pad(plaintext: str, key_size: int) -> bytes:
     max_plaintext_length = key_size_bytes - 11  # 11 bytes overhead for security
     
     if len(plaintext_bytes) > max_plaintext_length:
-        raise InputError("Plaintext length exceeds maximum allowable length for RSA encryption for this specific key of size " + str(key_size))
+        raise InputError("Plaintext length exceeds maximum allowable length for RSA/ElGamal encryption for this specific key of size " + str(key_size))
     
     padding_length = key_size_bytes - len(plaintext) - 3 # 3 bytes for labels
     padding = b'\x00\x02' + bytes([secrets.randbelow(254) + 1 for _ in range(padding_length)]) + b'\x00'
@@ -48,7 +48,7 @@ def pkcs1_v15_pad(plaintext: str, key_size: int) -> bytes:
 def pkcs1_v15_decode(padded_plaintext_int: int) -> str:
     """
 
-    Decoding method for RSA using PKCS #1 v1.5.
+    Decoding method for RSA/ElGamal using PKCS #1 v1.5.
 
     @param: padded_plaintext_int - the Encoded plaintext with PKCS #1 1.5 padding.
 

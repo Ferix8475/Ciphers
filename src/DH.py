@@ -4,7 +4,7 @@ import Primes
 
 
 class DH():
-    def __init__(self, public :list[int]):
+    def __init__(self, g: int, p: int):
         """
         Initializes a Diffie Helman character, either Alice or Bob
 
@@ -13,17 +13,16 @@ class DH():
         @return: none
         """
 
-        if len(public) != 2:
+        
+        
+        if not isinstance(g, int) or not isinstance(p, int):
             raise InputError("public needs to be a list of two numbers, [g, p], such that generator g that is a primitive root of p")
         
-        if not isinstance(public[0], int) or not isinstance(public[1], int):
-            raise InputError("public needs to be a list of two numbers, [g, p], such that generator g that is a primitive root of p")
-        
-        if not Primes.is_primitive_root(public[0], public[1]):
+        if not Primes.is_primitive_root(g, p):
             raise InputError("g is not a primitive root of p")
         
-        self._public_param = public
-        self.__private_param = secrets.randbelow(public[1] - 1)
+        self._public_param = (g, p)
+        self.__private_param = secrets.randbelow(p - 1)
 
 
 
@@ -31,7 +30,7 @@ class DH():
     def change_private_param(self) -> None:
 
         """
-        Changes the secret number such that it is still between [0, p - 1)
+        Changes the secret number such that it is still between [0, p - 1). It is recommended to use this quite often, after every single secret shared
 
         @param: none
 
@@ -43,7 +42,7 @@ class DH():
 
 
 
-    def change_public_param(self, public :list[int]) -> None:
+    def change_public_param(self, g: int, p: int) -> None:
         """
         Changes the public parameters g and p to the new specified parameters in public, [g, p]
 
@@ -52,16 +51,17 @@ class DH():
         @return: none
         """
 
-        if len(public) != 2:
+        
+        
+        if not isinstance(g, int) or not isinstance(p, int):
             raise InputError("public needs to be a list of two numbers, [g, p], such that generator g that is a primitive root of p")
         
-        if not isinstance(public[0], int) or not isinstance(public[1], int):
-            raise InputError("public needs to be a list of two numbers, [g, p], such that generator g that is a primitive root of p")
-        
-        if not Primes.is_primitive_root(public[0], public[1]):
+        if not Primes.is_primitive_root(g, p):
             raise InputError("g is not a primitive root of p")
         
-        self._public_param = public
+
+        self._public_param = (g, p)
+        self.change_private_param()
 
 
 
@@ -80,7 +80,7 @@ class DH():
 
 
     @staticmethod
-    def generate_key(self, bits: int) -> list:
+    def generate_key(bits: int) -> list:
         """
         Generates a prime p of bit length bits, and finds the smallest possible generator g. Time intensive method, don't rely on this. 
 
@@ -90,7 +90,7 @@ class DH():
         """
         prime = Primes.generate_prime(bits)
         g = Primes.find_primitive_root(prime)
-        return [g, prime]
+        return (g, prime)
     
 
 

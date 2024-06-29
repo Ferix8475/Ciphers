@@ -67,8 +67,8 @@ class RSA_key():
 
 
 
-
-    def load_public_key(self, filename):
+    @staticmethod
+    def load_public_key(filename):
         """
 
         Loads the encoded public key from the specified file (.pem)
@@ -96,12 +96,12 @@ class RSA_key():
         e_length = key_bytes[2 + n_length + 1]
         e = int.from_bytes(key_bytes[2 + n_length + 2: 2 + n_length + 2 + e_length], 'big')
 
-        self.__public_key = (n, e)
+        return n, e
 
 
 
-
-    def load_private_key(self, filename):
+    @staticmethod
+    def load_private_key(filename):
         """
 
         Loads the encoded private key from the specified file (.pem)
@@ -129,7 +129,7 @@ class RSA_key():
         d_length = key_bytes[2 + n_length + 1]
         d = int.from_bytes(key_bytes[2 + n_length + 2: 2 + n_length + 2 + d_length], 'big')
 
-        self.__private_key = (n, d)
+        return n, d
 
 
 
@@ -267,7 +267,12 @@ def encrypt(plaintext: str, key: RSA_key) -> int:
     @return: The ciphertext in the form of an integer
 
     """
+    if not isinstance(plaintext, str):
+        raise InputError("Input plaintext must be a string. Usage: RSA.encrypt(str plaintext, RSA_key key)")
 
+    if not isinstance(key, RSA_key):
+        raise InputError("Input key must be an RSA_key. Usage: RSA.encrypt(str plaintext, RSA_key key)")
+    
     padded_plaintext = Encode.pkcs1_v15_pad(plaintext, key.size)
     n, e = key.public_key()
     return pow(padded_plaintext, e, n)
@@ -287,7 +292,12 @@ def decrypt(ciphertext: int, key: RSA_key) -> str:
     @return: The plaintext in the form of a string
 
     """
+    if not isinstance(ciphertext, int):
+        raise InputError("Input ciphertext must be an int. Usage: RSA.decrypt(int ciphertext, RSA_key key)")
 
+    if not isinstance(key, RSA_key):
+        raise InputError("Input key must be a RSA_key. Usage: RSA.decrypt(int ciphertext, RSA_key key)")
+    
     n, d = key._private_key()
     padded_plaintext = pow(ciphertext, d, n)
     return Encode.pkcs1_v15_decode(padded_plaintext)

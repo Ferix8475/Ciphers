@@ -20,8 +20,6 @@ class RectangularTransposition:
         sortkey = sorted(key)
         index_map = {char: i for i, char in enumerate(key)}
 
-        print(key)
-
         self.__encryption_key = [index_map[char] for char in sortkey]
 
         self.__decryption_key = [0] * len(self.__encryption_key)
