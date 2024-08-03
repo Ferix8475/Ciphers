@@ -55,7 +55,7 @@ def test_classical(runs = 200, subtests = 20, string_size = 1000):
                     raise ValueError(f'Failed on {test_string} with {cipher}, ciphertext = {ciphertext}, decrypted plaintext = {plaintext}')
         print('Passed one subtest!!')
                 
-def test_RSA_EG(runs = 200, string_size=50): # Keep string_size fixed for this test, there isn't much tolerance because of prime bit sizes
+def test_RSA_EG(runs = 200, string_size=50):
 
     keys = [RSA.RSA_key([test_p, test_q]),
             ElGamal.ElGamal_Key(p=test_p, g=test_g)]
