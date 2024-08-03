@@ -34,7 +34,9 @@ class OTP:
         if not isinstance(plaintext, str):
             raise InputError("Plaintext must be a string. Proper Usage: obj.encrypt(string plaintext)")
         
-        if len(plaintext) < len(self.__key):
+        if len(plaintext) > len(self.__key):
+            print(plaintext)
+            print(self.__key)
             raise InputError("Plaintext must be shorter than the key. Proper Usage: obj.encrypt(string plaintext)")
         
         plaintext = standard_encode(plaintext)
@@ -42,7 +44,7 @@ class OTP:
         ciphertext = []
 
         for x in range(len(plaintext)):
-            toAdd = [(ord(plaintext[x]) + ord(self.__key[x])) % 26] + 65 # 65 is ASCII of A
+            toAdd = ((ord(plaintext[x]) + ord(self.__key[x])) % 26) + 65 # 65 is ASCII of A
             ciphertext.append(chr(toAdd))
 
         return ''.join(ciphertext)
@@ -52,7 +54,7 @@ class OTP:
         if not isinstance(ciphertext, str):
             raise InputError("Ciphertext must be a string. Proper Usage: obj.decrypt(string ciphertext)")
         
-        if len(ciphertext) < len(self.__key):
+        if len(ciphertext) > len(self.__key):
             raise InputError("Ciphertext must be shorter than the key. Proper Usage: obj.decrypt(string ciphertext)")
         
         for char in ciphertext:
@@ -62,7 +64,7 @@ class OTP:
         plaintext = []
 
         for x in range(len(ciphertext)):
-            toAdd = [(ord(ciphertext[x]) - ord(self.__key[x]) + 26) % 26] + 65 # 65 is ASCII of A
+            toAdd = ((ord(ciphertext[x]) - ord(self.__key[x]) + 26) % 26) + 65 # 65 is ASCII of A
             plaintext.append(chr(toAdd))
 
         return ''.join(plaintext)

@@ -133,8 +133,3 @@ class Playfair:
        characters = string.ascii_uppercase
        return ''.join(secrets.choice(characters) for _ in range(length))
 
-x = Playfair("ALPHABET")
-y = x.encrypt("hidden jewels in the trees")
-print(y)
-z = x.decrypt(y)
-print(z)

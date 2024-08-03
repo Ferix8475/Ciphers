@@ -1,3 +1,4 @@
+import random
 import string
 from Encode import standard_encode
 from Errors import InputError
@@ -94,7 +95,7 @@ class RectangularTransposition:
     @staticmethod
     def generate_key(length : int) -> string:
        characters = string.ascii_uppercase
-       return ''.join(secrets.choice(characters) for _ in range(length))
+       return ''.join(random.sample(characters, length))
+        
 
         
-x = RectangularTransposition("GGUUAARRDD")

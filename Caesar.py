@@ -12,7 +12,7 @@ class Caesar:
         shift = shift % 26
         alphabet = string.ascii_uppercase
         shifted_alphabet = alphabet[shift:] + alphabet[:shift]
-        self.__decryption_key = str.maketrans(alphabet, shifted_alphabet)
+        self.__encryption_key = str.maketrans(alphabet, shifted_alphabet)
         self.__decryption_key = str.maketrans(shifted_alphabet, alphabet)
 
     def changeKey(self, newShift: int) -> None:
@@ -23,7 +23,7 @@ class Caesar:
         newShift = newShift % 26
         alphabet = string.ascii_uppercase
         shifted_alphabet = alphabet[newShift:] + alphabet[:newShift]
-        self.__decryption_key = str.maketrans(alphabet, shifted_alphabet)
+        self.__encryption_key = str.maketrans(alphabet, shifted_alphabet)
         self.__decryption_key = str.maketrans(shifted_alphabet, alphabet)
 
     def encrypt(self, plaintext: str) -> str:
@@ -31,7 +31,7 @@ class Caesar:
         if not isinstance(plaintext, str):
             raise InputError("Plaintext must be a string. Proper Usage: obj.encrypt(string plaintext)")
 
-        return standard_encode(plaintext).translate(self.__decryption_key)
+        return standard_encode(plaintext).translate(self.__encryption_key)
 
     def decrypt(self, ciphertext: str) -> str:
 
