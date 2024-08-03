@@ -179,4 +179,3 @@ def find_primitive_root(p):
     
     return None
 
-

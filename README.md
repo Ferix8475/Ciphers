@@ -147,7 +147,7 @@ print(alice_secret == bob_secret) # Should print True
 
 # Change private parameters after an exchange
 alice.change_private_param()
-bob.change_public_param()
+bob.change_private_param()
 ```
 
 ## License
