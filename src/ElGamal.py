@@ -305,19 +305,3 @@ def decrypt(ciphertext: tuple[int], key: ElGamal_Key) -> str:
 
     return Encode.pkcs1_v15_decode(plaintext_encoded)
 
-print(Primes.generate_prime(2048))
-
-gen = True
-if gen:
-    p, g = generate_key_seed(56)
-    print(p, g)
-    x = ElGamal_Key(p, g)
-print(x._private_key())
-print(x.public_key())
-x.private_key_tofile("privatekey.pem")
-x.public_key_tofile("publickey.pem")
-
-y = x.load_private_key("privatekey.pem")
-p, g, h = x.load_public_key("publickey.pem")
-print(y)
-print(p, g, h)
